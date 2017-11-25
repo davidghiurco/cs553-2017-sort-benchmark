@@ -4,9 +4,7 @@ PA2 for CS 553 @ Illinois Institute of Technology
 
 # Authors
 
-David Ghiurco
-
-Alexandru Iulian Orhean
+David Ghiurco, Alexandru Iulian Orhean
 
 # Description
 
