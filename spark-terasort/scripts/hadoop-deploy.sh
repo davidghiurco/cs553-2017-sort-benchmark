@@ -1,8 +1,6 @@
 #!/bin/bash
 
-source ~/.profile
-
-export JAVA_HOME=$JAVA_HOME
+source ~/.bashrc
 
 HADOOP_CONF_DIR=$HADOOP_PREFIX/etc/hadoop
 
@@ -26,9 +24,9 @@ $HADOOP_PREFIX/sbin/hadoop-daemons.sh --config $HADOOP_CONF_DIR --script hdfs st
 
 if [ "$(hostname)" == "$master" ]
 then
-    $HADOOP_YARN_HOME/sbin/yarn-daemon.sh --config $HADOOP_CONF_DIR start resourcemanager
+    $HADOOP_PREFIX/sbin/yarn-daemon.sh --config $HADOOP_CONF_DIR start resourcemanager
 
 fi
 
-$HADOOP_YARN_HOME/sbin/yarn-daemons.sh --config $HADOOP_CONF_DIR start nodemanager
+$HADOOP_PREFIX/sbin/yarn-daemons.sh --config $HADOOP_CONF_DIR start nodemanager
 

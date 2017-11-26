@@ -40,6 +40,20 @@ then
     source ~/.profile
 fi
 
+exists=$(cat ~/.bashrc | grep "JAVA_HOME" | wc -l)
+if [ $exists -eq 0 ]
+then
+    echo "export JAVA_HOME=\"/usr/lib/jvm/java-1.8.0-openjdk-amd64\"" >> ~/.bashrc
+    source ~/.bashrc
+fi
+
+exists=$(cat ~/.bashrc | grep "HADOOP_PREFIX" | wc -l)
+if [ $exists -eq 0 ]
+then
+    echo "export HADOOP_PREFIX=\"$(pwd)/download/hadoop-2.7.4\"" >> ~/.bashrc
+    source ~/.bashrc
+fi
+
 if [ ! -d "HDFS" ]
 then
     mkdir -p HDFS/namenode
