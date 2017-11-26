@@ -21,6 +21,6 @@ if [ ! -d "hadoop" ]; then
 fi
 
 PWD=$(pwd)
-export PATH=${PWD}/hadoop/bin:$PATH
+export PATH=${PWD}/hadoop/bin:${PWD}/hadoop/sbin:$PATH
 
 cp config/1node/etc/hadoop/* hadoop/etc/hadoop/
