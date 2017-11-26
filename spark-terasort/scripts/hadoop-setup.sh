@@ -13,7 +13,7 @@ fi
 if [ ! -e "download/hadoop-2.7.4.tar.gz" ]
 then
     cd download
-    wget http://supergsego.com/apache/hadoop/common/hadoop-2.7.4/hadoop-2.7.4.tar.gz
+    wget http://apache.claz.org/hadoop/common/hadoop-2.7.4/hadoop-2.7.4.tar.gz
     cd ..
 fi
 
