@@ -31,15 +31,20 @@ exists=$(cat ~/.bashrc | grep "JAVA_HOME" | wc -l)
 if [ $exists -eq 0 ]
 then
     echo "export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64" >> ~/.bashrc
-    source ~/.bashrc
 fi
 
 exists=$(cat ~/.bashrc | grep "HADOOP_PREFIX" | wc -l)
 if [ $exists -eq 0 ]
 then
     echo "export HADOOP_PREFIX=$(pwd)/download/hadoop-2.7.4" >> ~/.bashrc
-    source ~/.bashrc
 fi
+
+head -n 24 $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh > temp.txt
+echo "export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64" >> temp.txt
+echo "export HADOOP_PREFIX=$(pwd)/download/hadoop-2.7.4" >> temp.txt
+head -n -25 $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh >> temp.txt
+cat temp.txt > $HADOOP_PREFIX/etc/hadoop/hadoop-env.sh
+
 
 if [ ! -d "HDFS" ]
 then
