@@ -2,7 +2,9 @@
 
 source ~/.profile
 
-HADOOP_CONF_DIR=$HADOOP_PREFIX/etc
+export JAVA_HOME=$JAVA_HOME
+
+HADOOP_CONF_DIR=$HADOOP_PREFIX/etc/hadoop
 
 master="null"
 while read line
