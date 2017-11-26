@@ -1,0 +1,14 @@
+.idea/
+Root.iml
+hadoop-terasort/HTerasort.iml
+hadoop-terasort/hadoop-terasort.iml
+spark-terasort/STerasort.iml
+spark-terasort/scripts/HDFS/
+spark-terasort/scripts/download/
+spark-terasort/scripts/temp.txt
+
+*.class
+
+
+scripts/data
+scripts/download
