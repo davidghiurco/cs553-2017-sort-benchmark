@@ -9,4 +9,4 @@ hadoop-deploy: hadoop-deploy.sh
 	$(BASH) hadoop-deploy.sh
 
 clean:
-	$(RM) -rf download HDFS
+	$(RM) -rf download HDFS temp.txt
