@@ -1,0 +1,12 @@
+dependencies {
+    compile 'org.apache.hadoop:hadoop-mapreduce-client-core:2.7.4'
+    compile 'org.apache.hadoop:hadoop-common:2.7.4'
+}
+
+mainClassName = 'HTerasort'
+jar {
+    baseName = 'htera'
+    manifest {
+        attributes 'Main-Class': 'HTerasort'
+    }
+}

@@ -12,3 +12,7 @@ spark-terasort/scripts/temp.txt
 
 scripts/data
 scripts/download
+
+temp.txt
+
+.gradle/
