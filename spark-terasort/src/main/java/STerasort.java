@@ -1,31 +1,23 @@
-import org.apache.spark.api.java.JavaPairRDD;
-import org.apache.spark.api.java.JavaSparkContext;
-import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.SparkConf;
+import org.apache.spark.api.java.JavaRDD;
+import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.Function;
-import org.apache.spark.api.java.function.PairFunction;
-import scala.Tuple2;
-
-import java.util.Arrays;
 
 public class STerasort {
 
     public static void main(String[] args) throws Exception {
-        String inputFileName = "/input/tiny.data";
-        String outputFileName = "/output/spark";
+        String inputFileName = args[0];
+        String outputDir = "/output/spark";
+        String hdfs_URI = args[1]; // "localhost:9000"
+        int numPartitions = Integer.parseInt(args[2]);
 
         SparkConf conf = new SparkConf().setAppName("Spark TeraSort");
         JavaSparkContext sc = new JavaSparkContext(conf);
 
-        JavaRDD<String> textFile = sc.textFile("hdfs://MSI-OSBox:9000" + inputFileName);
-
+        JavaRDD<String> textFile = sc.textFile("hdfs://" + hdfs_URI + inputFileName);
         JavaRDD<String> sorted = textFile
-                .map(line -> line.split(" ", 2))
-                .mapToPair(s -> new Tuple2<>(s[0], s[1]))
-                .sortByKey()
-                .map(tuple -> String.join(" ", tuple._1(), tuple._2()));
+                .sortBy((Function<String, String>) value -> value, true, numPartitions);
 
-
-        sorted.saveAsTextFile("hdfs://MSI-OSBox:9000" + outputFileName);
+        sorted.saveAsTextFile("hdfs://" + hdfs_URI + outputDir);
     }
 }
