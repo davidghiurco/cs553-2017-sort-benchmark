@@ -2,11 +2,17 @@ BASH=bash
 
 all: hadoop-setup
 
-hadoop-setup: hadoop-setup.sh
-	$(BASH) hadoop-setup.sh
+single-hadoop-setup:
+	$(BASH) single-hadoop-setup.sh
 
-hadoop-deploy: hadoop-deploy.sh
-	$(BASH) hadoop-deploy.sh
+single-hadoop-deploy:
+	$(BASH) single-hadoop-deploy.sh
+
+multi-hadoop-setup:
+	$(BASH) multi-hadoop-setup.sh
+
+multi-hadoop-deploy:
+	$(BASH) multi-hadoop-deploy.sh
 
 clean:
 	$(RM) -rf download HDFS temp.txt
