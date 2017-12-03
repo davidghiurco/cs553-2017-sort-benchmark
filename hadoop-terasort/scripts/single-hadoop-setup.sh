@@ -5,16 +5,6 @@ export HADOOP_PREFIX=$(pwd)/download/hadoop-2.7.4
 
 master=$(head -n 1 hadoop-config.cfg)
 
-#while read -r line
-#do
-#    if [ "$master" == "null" ]; then
-#        master=$line
-#        echo "$line" > $HADOOP_PREFIX/etc/hadoop/slaves
-#    else
-#        echo "$line" >> $HADOOP_PREFIX/etc/hadoop/slaves
-#    fi
-#done < hadoop-config.cfg
-
 if [ ! -d "download" ]
 then
     mkdir download
@@ -34,8 +24,8 @@ then
     cd ..
 fi
 
-# sudo apt update
-# sudo apt install -y openjdk-8-jdk
+sudo apt update
+sudo apt install -y openjdk-8-jdk
 
 exists=$(cat ~/.bashrc | grep "JAVA_HOME" | wc -l)
 if [ $exists -eq 0 ]
@@ -138,7 +128,7 @@ echo "    </property>" >> $HADOOP_PREFIX/etc/hadoop/mapred-site.xml
 echo "</configuration>" >> $HADOOP_PREFIX/etc/hadoop/mapred-site.xml
 
 echo "export HADOOP_HOME=$HADOOP_PREFIX" > hadoop_prefix.sh
-echo "export HADOOP_CONF_DIR=$HADOOP_PREFIX/etc/hadoop" >> hadoop_prefix.sh
-echo "export YARN_CONF_DIR=$HADOOP_PREFIX/etc/hadoop" >> hadoop_prefix.sh
-echo "export PATH=$HADOOP_PREFIX/bin:$HADOOP_PREFIX/sbin:$PATH" >> hadoop_prefix.sh
+echo "export HADOOP_CONF_DIR=$HADOOP_PREFIX/etc/hadoop" >> hadoop-prefix.sh
+echo "export YARN_CONF_DIR=$HADOOP_PREFIX/etc/hadoop" >> hadoop-prefix.sh
+echo "export PATH=$HADOOP_PREFIX/bin:$HADOOP_PREFIX/sbin:$PATH" >> hadoop-prefix.sh
 
