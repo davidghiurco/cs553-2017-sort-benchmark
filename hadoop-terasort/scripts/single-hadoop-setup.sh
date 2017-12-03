@@ -3,7 +3,7 @@
 export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64
 export HADOOP_PREFIX=$(pwd)/download/hadoop-2.7.4
 
-master="MSI-OSBOx"
+master=$(head -n 1 hadoop-config.cfg)
 
 #while read -r line
 #do
