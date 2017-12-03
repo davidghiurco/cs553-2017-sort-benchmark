@@ -2,7 +2,6 @@ import java.io.IOException;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
@@ -10,20 +9,11 @@ import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.examples.terasort.TeraGen;
+import org.apache.hadoop.examples.terasort.TeraValidate;
 
 public class HTerasort {
 
-//    public static class SortMapper extends Mapper<Object, Text, Text, IntWritable>{
-//
-//        private final static IntWritable one = new IntWritable(1);
-//        private NullWritable nullValue = NullWritable.get();
-//
-//        public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
-//            // value = value.replace("\\s+","");
-//            // String v = value.toString();
-//            context.write(value, nullValue);
-//        }
-//    }
 
     public static class SortMapper extends Mapper<Object, Text, Text, NullWritable>{
         private NullWritable nullValue = NullWritable.get();
@@ -33,12 +23,13 @@ public class HTerasort {
         }
     }
 
-    public static class SortReducer extends Reducer<Text, IntWritable, Text, NullWritable> {
+
+    public static class SortReducer extends Reducer<Text, NullWritable, Text, NullWritable> {
         private NullWritable nullValue = NullWritable.get();
 
-        public void reduce(Text key, Iterable<IntWritable> num_occurrences, Context context) throws IOException, InterruptedException {
+        public void reduce(Text key, Iterable<NullWritable> num_occurrences, Context context) throws IOException, InterruptedException {
 
-            for (IntWritable val : num_occurrences) {
+            for (NullWritable val : num_occurrences) {
                 context.write(key, nullValue);
             }
         }
@@ -50,7 +41,7 @@ public class HTerasort {
         job.setJarByClass(HTerasort.class);
 
         job.setMapperClass(SortMapper.class);
-        // job.setCombinerClass(SortReducer.class);
+        job.setCombinerClass(SortReducer.class);
         job.setReducerClass(SortReducer.class);
         // job.setNumReduceTasks(0);
 
