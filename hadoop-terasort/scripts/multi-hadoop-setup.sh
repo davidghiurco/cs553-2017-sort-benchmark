@@ -133,6 +133,10 @@ echo "    <property>" >> $HADOOP_PREFIX/etc/hadoop/mapred-site.xml
 echo "        <name>mapreduce.framework.name</name>" >> $HADOOP_PREFIX/etc/hadoop/mapred-site.xml
 echo "        <value>yarn</value>" >> $HADOOP_PREFIX/etc/hadoop/mapred-site.xml
 echo "    </property>" >> $HADOOP_PREFIX/etc/hadoop/mapred-site.xml
+echo "    <property>" >> $HADOOP_PREFIX/etc/hadoop/mapred-site.xml
+echo "        <name>mapreduce.fileoutputcommitter.marksuccessfuljobs</name>" >> $HADOOP_PREFIX/etc/hadoop/mapred-site.xml
+echo "        <value>false</value>" >> $HADOOP_PREFIX/etc/hadoop/mapred-site.xml
+echo "    </property>" >> $HADOOP_PREFIX/etc/hadoop/mapred-site.xml
 echo "</configuration>" >> $HADOOP_PREFIX/etc/hadoop/mapred-site.xml
 
 echo "export HADOOP_HOME=$HADOOP_PREFIX" > hadoop_prefix.sh

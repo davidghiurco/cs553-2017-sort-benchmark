@@ -91,31 +91,9 @@ echo "    <property>" >> $HADOOP_PREFIX/etc/hadoop/yarn-site.xml
 echo "        <name>yarn.nodemanager.aux-services</name>" >> $HADOOP_PREFIX/etc/hadoop/yarn-site.xml
 echo "        <value>mapreduce_shuffle</value>" >> $HADOOP_PREFIX/etc/hadoop/yarn-site.xml
 echo "    </property>" >> $HADOOP_PREFIX/etc/hadoop/yarn-site.xml
-#echo "    <property>" >> $HADOOP_PREFIX/etc/hadoop/yarn-site.xml
-#echo "        <name>yarn.nodemanager.aux-services.mapreduce.shuffle.class</name>" >> $HADOOP_PREFIX/etc/hadoop/yarn-site.xml
-#echo "        <value>org.apache.hadoop.mapred.ShuffleHandler</value>" >> $HADOOP_PREFIX/etc/hadoop/yarn-site.xml
-#echo "    </property>" >> $HADOOP_PREFIX/etc/hadoop/yarn-site.xml
-#echo "    <property>" >> $HADOOP_PREFIX/etc/hadoop/yarn-site.xml
-#echo "        <name>yarn.resourcemanager.hostname</name>" >> $HADOOP_PREFIX/etc/hadoop/yarn-site.xml
-#echo "        <value>$master</value>" >> $HADOOP_PREFIX/etc/hadoop/yarn-site.xml
-#echo "    </property>" >> $HADOOP_PREFIX/etc/hadoop/yarn-site.xml
-#echo "    <property>" >> $HADOOP_PREFIX/etc/hadoop/yarn-site.xml
-#echo "        <name>yarn.resourcemanager.resource-tracker.address</name>" >> $HADOOP_PREFIX/etc/hadoop/yarn-site.xml
-#echo "        <value>$master:8025</value>" >> $HADOOP_PREFIX/etc/hadoop/yarn-site.xml
-#echo "    </property>" >> $HADOOP_PREFIX/etc/hadoop/yarn-site.xml
-#echo "    <property>" >> $HADOOP_PREFIX/etc/hadoop/yarn-site.xml
-#echo "        <name>yarn.resourcemanager.scheduler.address</name>" >> $HADOOP_PREFIX/etc/hadoop/yarn-site.xml
-#echo "        <value>$master:8030</value>" >> $HADOOP_PREFIX/etc/hadoop/yarn-site.xml
-#echo "    </property>" >> $HADOOP_PREFIX/etc/hadoop/yarn-site.xml
-#echo "    <property>" >> $HADOOP_PREFIX/etc/hadoop/yarn-site.xml
-#echo "        <name>yarn.resourcemanager.address</name>" >> $HADOOP_PREFIX/etc/hadoop/yarn-site.xml
-#echo "        <value>$master:8050</value>" >> $HADOOP_PREFIX/etc/hadoop/yarn-site.xml
-#echo "    </property>" >> $HADOOP_PREFIX/etc/hadoop/yarn-site.xml
-#echo "    <property>" >> $HADOOP_PREFIX/etc/hadoop/yarn-site.xml
-#echo "        <name>yarn.nodemanager.resource.cpu-vcores</name>" >> $HADOOP_PREFIX/etc/hadoop/yarn-site.xml
-#echo "        <value>4</value>" >> $HADOOP_PREFIX/etc/hadoop/yarn-site.xml
-#echo "    </property>" >> $HADOOP_PREFIX/etc/hadoop/yarn-site.xml
 echo "</configuration>" >> $HADOOP_PREFIX/etc/hadoop/yarn-site.xml
+
+mapreduce.fileoutputcommitter.marksuccessfuljobs
 
 num=$(cat $HADOOP_PREFIX/etc/hadoop/mapred-site.xml.template | grep -n "<configuration>" | cut -d ':' -f1)
 head -n $(($num - 1)) $HADOOP_PREFIX/etc/hadoop/mapred-site.xml.template > temp.txt
@@ -124,6 +102,10 @@ echo "<configuration>" >> $HADOOP_PREFIX/etc/hadoop/mapred-site.xml
 echo "    <property>" >> $HADOOP_PREFIX/etc/hadoop/mapred-site.xml
 echo "        <name>mapreduce.framework.name</name>" >> $HADOOP_PREFIX/etc/hadoop/mapred-site.xml
 echo "        <value>yarn</value>" >> $HADOOP_PREFIX/etc/hadoop/mapred-site.xml
+echo "    </property>" >> $HADOOP_PREFIX/etc/hadoop/mapred-site.xml
+echo "    <property>" >> $HADOOP_PREFIX/etc/hadoop/mapred-site.xml
+echo "        <name>mapreduce.fileoutputcommitter.marksuccessfuljobs</name>" >> $HADOOP_PREFIX/etc/hadoop/mapred-site.xml
+echo "        <value>false</value>" >> $HADOOP_PREFIX/etc/hadoop/mapred-site.xml
 echo "    </property>" >> $HADOOP_PREFIX/etc/hadoop/mapred-site.xml
 echo "</configuration>" >> $HADOOP_PREFIX/etc/hadoop/mapred-site.xml
 

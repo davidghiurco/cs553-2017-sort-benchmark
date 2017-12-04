@@ -14,6 +14,9 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
+import org.apache.hadoop.examples.terasort.TeraInputFormat;
+import org.apache.hadoop.examples.terasort.TeraOutputFormat;
+
 
 public class HTerasort extends Configured implements Tool {
 
@@ -60,13 +63,14 @@ public class HTerasort extends Configured implements Tool {
 
         // Input
         FileInputFormat.addInputPath(job, new Path(args[0]));
-        job.setInputFormatClass(TextInputFormat.class);
+        job.setInputFormatClass(TeraInputFormat.class);
 
         // Ouput
         FileOutputFormat.setOutputPath(job, new Path(args[1]));
-        job.setOutputFormatClass(TextOutputFormat.class);
+        job.setOutputFormatClass(TeraOutputFormat.class);
+
         job.setOutputKeyClass(Text.class);
-        job.setOutputValueClass(NullWritable.class);
+        job.setOutputValueClass(Text.class);
 
         return job.waitForCompletion(true) ? 0 : 1;
     }
