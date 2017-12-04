@@ -128,3 +128,9 @@ echo "export HADOOP_HOME=$HADOOP_PREFIX" > hadoop_prefix.sh
 echo "export HADOOP_CONF_DIR=$HADOOP_PREFIX/etc/hadoop" >> hadoop_prefix.sh
 echo "export YARN_CONF_DIR=$HADOOP_PREFIX/etc/hadoop" >> hadoop_prefix.sh
 echo "export PATH=$HADOOP_PREFIX/bin:$HADOOP_PREFIX/sbin:$PATH" >> hadoop_prefix.sh
+
+echo -n "" > $HADOOP_PREFIX/etc/hadoop/slaves
+for i in ${!hosts[@]}
+do
+    echo "${hosts[$i]}" >> $HADOOP_PREFIX/etc/hadoop/slaves
+done
