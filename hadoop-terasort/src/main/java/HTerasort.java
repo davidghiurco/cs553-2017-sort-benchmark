@@ -21,22 +21,25 @@ import org.apache.hadoop.examples.terasort.TeraOutputFormat;
 public class HTerasort extends Configured implements Tool {
 
 
-    public static class SortMapper extends Mapper<Object, Text, Text, NullWritable>{
+    public static class SortMapper extends Mapper<Text, Text, Text, Text>{
         private NullWritable nullValue = NullWritable.get();
 
-        public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
-            context.write(value, nullValue);
+        /*
+            Mapper that spits each line into keys of the first 10 bytes, and values of the rest
+        */
+        public void map(Text key, Text value, Context context) throws IOException, InterruptedException {
+            context.write(key, value);
         }
     }
 
 
-    public static class SortReducer extends Reducer<Text, NullWritable, Text, NullWritable> {
+    public static class SortReducer extends Reducer<Text, Text, Text, Text> {
         private NullWritable nullValue = NullWritable.get();
 
-        public void reduce(Text key, Iterable<NullWritable> num_occurrences, Context context) throws IOException, InterruptedException {
+        public void reduce(Text key, Iterable<Text> num_occurrences, Context context) throws IOException, InterruptedException {
 
-            for (NullWritable val : num_occurrences) {
-                context.write(key, nullValue);
+            for (Text val : num_occurrences) {
+                context.write(key, val);
             }
         }
     }
@@ -63,11 +66,11 @@ public class HTerasort extends Configured implements Tool {
 
         // Input
         FileInputFormat.addInputPath(job, new Path(args[0]));
-        job.setInputFormatClass(TextInputFormat.class);
+        job.setInputFormatClass(TeraInputFormat.class);
 
         // Ouput
         FileOutputFormat.setOutputPath(job, new Path(args[1]));
-        job.setOutputFormatClass(TextOutputFormat.class);
+        job.setOutputFormatClass(TeraOutputFormat.class);
 
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(Text.class);
