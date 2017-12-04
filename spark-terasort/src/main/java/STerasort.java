@@ -51,7 +51,6 @@ public class STerasort {
 //        JavaRDD<String> sorted = textFile
 //                .sortBy((Function<String, String>) value -> value, true, numPartitions);
 //        sorted.saveAsTextFile("hdfs://" + hdfs_URI + outputDir);
-
         JavaPairRDD<Text, Text> rdd = sc.newAPIHadoopRDD(hadoop_conf, TeraInputFormat.class, Text.class, Text.class);
         JavaPairRDD<Text, Text> sort = rdd.sortByKey();
         sort.saveAsNewAPIHadoopDataset(hadoop_conf);
