@@ -5,6 +5,10 @@ dependencies {
 
     compile 'org.apache.spark:spark-core_2.11:2.2.0'
     compile 'org.apache.spark:spark-sql_2.11:2.2.0'
+
+    compile 'org.apache.hadoop:hadoop-mapreduce-examples:2.7.4'
+    compile 'org.apache.hadoop:hadoop-mapreduce-client-core:2.7.4'
+    compile 'org.apache.hadoop:hadoop-common:2.7.4'
 }
 
 mainClassName = 'STerasort'
