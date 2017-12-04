@@ -93,8 +93,6 @@ echo "        <value>mapreduce_shuffle</value>" >> $HADOOP_PREFIX/etc/hadoop/yar
 echo "    </property>" >> $HADOOP_PREFIX/etc/hadoop/yarn-site.xml
 echo "</configuration>" >> $HADOOP_PREFIX/etc/hadoop/yarn-site.xml
 
-mapreduce.fileoutputcommitter.marksuccessfuljobs
-
 num=$(cat $HADOOP_PREFIX/etc/hadoop/mapred-site.xml.template | grep -n "<configuration>" | cut -d ':' -f1)
 head -n $(($num - 1)) $HADOOP_PREFIX/etc/hadoop/mapred-site.xml.template > temp.txt
 cat temp.txt > $HADOOP_PREFIX/etc/hadoop/mapred-site.xml
