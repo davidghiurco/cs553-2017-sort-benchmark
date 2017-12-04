@@ -19,15 +19,15 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 public class STerasort {
 
     public static void main(String[] args) throws Exception {
-        if (args.length != 4) {
-            usage();
-            System.exit(1);
-        }
-
-        String inputFileName = args[0];
-        String outputDir = args[1];
-        String hdfs_URI = args[2]; // "localhost:9000"
-        int numPartitions = Integer.parseInt(args[3]);
+//        if (args.length != 4) {
+//            usage();
+//            System.exit(1);
+//        }
+//
+//        String inputFileName = args[0];
+//        String outputDir = args[1];
+//        String hdfs_URI = args[2]; // "localhost:9000"
+//        int numPartitions = Integer.parseInt(args[3]);
 
         // Hadoop setup
         Configuration hadoop_conf = new Configuration();
