@@ -19,6 +19,8 @@ configurations:
 2. 1-node i3.4xlarge Amazon EC2 instance;
 3. 8-node i3.large Amazon EC2 instances;
 
+Note: MPI TeraSort was not implemented in this report
+
 # Project Organization
 
 The implementation are organized in different directories, that contain the
@@ -36,7 +38,22 @@ The task list for the homework assignment:
 - [ ] Set up the Spark environment (HDFS + framework) (write scripts);
 - [ ] Implement the Spark solution;
 - [ ] Evaluate the Spark solution;
-- [ ] Set up the MPI environment (BeeGFS / Lustre + libraries) (write scripts);
-- [ ] Implement the MPI solution;
-- [ ] Evaluate the MPI solution;
 
+# Building Project
+
+```bash
+./gradlew build
+```
+This will compile the hadoop-terasort & spark-terasort modules.
+
+The Hadoop application JAR will be installed in:
+```bash
+hadoop-terasort/build/libs/htera.jar
+```
+
+The Spark application JAR will be installed in:
+```bash
+spark-terasort/build/libs/stera.jar
+```
+To setup the ecosystem of each implementation, and for experiment setup instructions, 
+see the respective README.md of each module

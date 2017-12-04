@@ -1,6 +1,7 @@
 import java.io.IOException;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
@@ -8,11 +9,13 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
-import org.apache.hadoop.examples.terasort.TeraGen;
-import org.apache.hadoop.examples.terasort.TeraValidate;
+import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
+import org.apache.hadoop.util.Tool;
+import org.apache.hadoop.util.ToolRunner;
 
-public class HTerasort {
+public class HTerasort extends Configured implements Tool {
 
 
     public static class SortMapper extends Mapper<Object, Text, Text, NullWritable>{
@@ -35,24 +38,41 @@ public class HTerasort {
         }
     }
 
-    public static void main(String[] args) throws Exception {
+    private static void usage() throws IOException {
+        System.err.println("htera.jar <HDFS-input-dir-path> <HDFS-output-dir-path>");
+    }
+
+    public int run(String[] args) throws Exception {
+        if (args.length != 2) {
+            usage();
+            return 1;
+        }
+
         Configuration conf = new Configuration();
         Job job = Job.getInstance(conf, "HTerasort");
         job.setJarByClass(HTerasort.class);
 
+        // MapReduce Job configuration
         job.setMapperClass(SortMapper.class);
         job.setCombinerClass(SortReducer.class);
         job.setReducerClass(SortReducer.class);
-        // job.setNumReduceTasks(0);
+        // job.setNumReduceTasks(1); // Number of reducers can be specified command-line
 
+        // Input
+        FileInputFormat.addInputPath(job, new Path(args[0]));
+        job.setInputFormatClass(TextInputFormat.class);
+
+        // Ouput
+        FileOutputFormat.setOutputPath(job, new Path(args[1]));
+        job.setOutputFormatClass(TextOutputFormat.class);
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(NullWritable.class);
 
-        FileInputFormat.addInputPath(job, new Path(args[0]));
-        FileOutputFormat.setOutputPath(job, new Path(args[1]));
+        return job.waitForCompletion(true) ? 0 : 1;
+    }
 
-        job.waitForCompletion(true);
-
-        System.out.println("Finished");
+    public static void main(String[] args) throws Exception {
+        int res = ToolRunner.run(new Configuration(), new HTerasort(), args);
+        System.exit(res);
     }
 }
