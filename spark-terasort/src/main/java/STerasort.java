@@ -3,6 +3,7 @@ import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.Function;
+import org.apache.spark.rdd.NewHadoopRDD;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.examples.terasort.TeraInputFormat;
@@ -35,7 +36,11 @@ public class STerasort {
 //        JavaRDD<String> sorted = textFile
 //                .sortBy((Function<String, String>) value -> value, true, numPartitions);
 //        sorted.saveAsTextFile("hdfs://" + hdfs_URI + outputDir);
-        JavaPairRDD<Text, Text> rdd = sparkContext.newAPIHadoopRDD(hadoop_conf, TeraInputFormat.class, Text.class, Text.class);
+        rdd = NewHadoopRDD()
+
+        JavaPairRDD<Text, Text> rdd = NewHadoopRDD(
+                sparkContext, TeraInputFormat.class, Text.class, Text.class, job.getConfiguration())
+        // JavaPairRDD<Text, Text> rdd = sparkContext.newAPIHadoopRDD(spark_conf, TeraInputFormat.class, Text.class, Text.class);
         JavaPairRDD<Text, Text> sort = rdd.sortByKey();
         sort.saveAsNewAPIHadoopDataset(hadoop_conf);
 

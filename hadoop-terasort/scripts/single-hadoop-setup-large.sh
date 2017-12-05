@@ -86,7 +86,7 @@ echo "    <property>" >> ${HADOOP_HOME}/etc/hadoop/core-site.xml
 echo "        <name>fs.defaultFS</name>" >> ${HADOOP_HOME}/etc/hadoop/core-site.xml
 echo "        <value>hdfs://$master:9000</value>" >> ${HADOOP_HOME}/etc/hadoop/core-site.xml
 echo "    </property>" >> ${HADOOP_HOME}/etc/hadoop/core-site.xml
-echo "    <property>" >> $HADOOP_HOME/etc/hadoop/core-site.xml
+echo "    <property>" >> ${HADOOP_HOME}/etc/hadoop/core-site.xml
 echo "        <name>hadoop.tmp.dir</name>" >> ${HADOOP_HOME}/etc/hadoop/core-site.xml
 echo "        <value>$(pwd)/HDFS/tmp</value>" >> ${HADOOP_HOME}/etc/hadoop/core-site.xml
 echo "    </property>" >> ${HADOOP_HOME}/etc/hadoop/core-site.xml
