@@ -112,6 +112,10 @@ echo "    <property>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
 echo "        <name>yarn.nodemanager.aux-services</name>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
 echo "        <value>mapreduce_shuffle</value>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
 echo "    </property>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+echo "    <property>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+echo "        <name>yarn.resourcemanager.hostname</name>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+echo "        <value>$master</value>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+echo "    </property>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
 echo "</configuration>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
 
 num=$(cat ${HADOOP_HOME}/etc/hadoop/mapred-site.xml.template | grep -n "<configuration>" | cut -d ':' -f1)

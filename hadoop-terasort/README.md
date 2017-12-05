@@ -15,8 +15,23 @@ This will install the JAR file in hadoop-terasort/build/libs/htera.jar
 1. Edit scripts/hadoop-config.cfg. Enter hostnames of the cluster. The cluster master hostname should be the first entry,
 and subsequent entries should be the hostnames of slave nodes. In the case of single-node cluster deployment, enter 'localhost'
 2. Check that the entries in hadoop-config.cfg are correctly setup with proper addresses in /etc/hosts
-3. Setup password-less SSH between all relevant hosts from above
-4. Depending on which cluster you are configuring, run the following commands
+3. Setup password-less SSH between all relevant hosts from above. This includes single-node deployments
+4. Add the results of $(hostname) to /etc/hosts with the corresponding private DNS address
+    Example /etc/hosts (on AWS):
+    ```bash
+    127.0.0.1 localhost
+    172.31.36.148 ip-172-31-36-148
+    
+    # The following lines are desirable for IPv6 capable hosts
+    ::1 ip6-localhost ip6-loopback
+    fe00::0 ip6-localnet
+    ff00::0 ip6-mcastprefix
+    ff02::1 ip6-allnodes
+    ff02::2 ip6-allrouters
+    ff02::3 ip6-allhosts
+
+    ```
+5. Depending on which cluster you are configuring, run the following commands
 
     Single-node cluster:
     ```bash
@@ -31,16 +46,18 @@ and subsequent entries should be the hostnames of slave nodes. In the case of si
     make multi-hadoop-setup
     make multi-hadoop-deploy
     ```
+    
+    Accept any requests to connect to various IP addresses.
 
     Regardless of which deployment you chose, the scripts will create a source-able BASH script which contains environment
     variable setups for the Hadoop ecosystem
 
-5. Update your $PATH environment with the relevant paths
+6. Update your $PATH environment with the relevant paths
     ```bash
     source hadoop-prefix.sh
     ```
 
-6. Verify ecosystem has been successfully deployed
+7. Verify ecosystem has been successfully deployed
 
     ```bash
     jps
