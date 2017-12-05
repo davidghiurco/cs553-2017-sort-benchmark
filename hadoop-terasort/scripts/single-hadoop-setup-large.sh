@@ -134,6 +134,10 @@ echo "    <property>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
 echo "        <name>yarn.nodemanager.resource.cpu-vcores</name>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
 echo "        <value>2</value>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
 echo "    </property>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+echo "    <property>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+echo "        <name>yarn.log-aggregation-enable</name>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+echo "        <value>true</value>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+echo "    </property>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
 echo "</configuration>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
 
 num=$(cat ${HADOOP_HOME}/etc/hadoop/mapred-site.xml.template | grep -n "<configuration>" | cut -d ':' -f1)

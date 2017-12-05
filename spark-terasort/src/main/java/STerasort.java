@@ -1,56 +1,31 @@
-import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.spark.SparkConf;
-import org.apache.spark.api.java.JavaPairRDD;
+import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
-import org.apache.spark.api.java.function.Function;
-import org.apache.spark.rdd.NewHadoopRDD;
-
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.examples.terasort.TeraInputFormat;
-import org.apache.hadoop.examples.terasort.TeraOutputFormat;
-import org.apache.hadoop.examples.terasort.TeraSort;
-import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.Text;
-import org.apache.hadoop.mapreduce.Job;
 
 public class STerasort {
 
     public static void main(String[] args) throws Exception {
+        if (args.length != 1) {
+            System.out.println("number of partitions required");
+        }
 
         SparkConf spark_conf = new SparkConf().setAppName("Spark TeraSort");
         JavaSparkContext sparkContext = new JavaSparkContext(spark_conf);
 
-        // Hadoop setup
-        Configuration hadoop_conf = sparkContext.hadoopConfiguration();
-        Job job = Job.getInstance(hadoop_conf, "STerasort");
 
-        // Input
-        TeraInputFormat.addInputPath(job, new Path(args[0]));
-        job.setInputFormatClass(TeraInputFormat.class);
+        long startTime = System.nanoTime();
+        JavaRDD<String> textFile = sparkContext.textFile("/input", Integer.parseInt(args[0]));
+        JavaRDD<String> sorted = textFile
+                .sortBy(value -> value, true, Integer.parseInt(args[0]));
+        sorted.saveAsTextFile("/output");
 
-        // Output
-        FileOutputFormat.setOutputPath(job, new Path(args[1]));
-        job.setOutputFormatClass(TeraOutputFormat.class);
 
-//        JavaRDD<String> textFile = sc.textFile("hdfs://" + hdfs_URI + inputFileName);
-//        JavaRDD<String> sorted = textFile
-//                .sortBy((Function<String, String>) value -> value, true, numPartitions);
-//        sorted.saveAsTextFile("hdfs://" + hdfs_URI + outputDir);
-        rdd = NewHadoopRDD()
+        long endTime = System.nanoTime();
+        double duration = (double) (endTime - startTime) / 1000000000.0;
 
-        JavaPairRDD<Text, Text> rdd = NewHadoopRDD(
-                sparkContext, TeraInputFormat.class, Text.class, Text.class, job.getConfiguration())
-        // JavaPairRDD<Text, Text> rdd = sparkContext.newAPIHadoopRDD(spark_conf, TeraInputFormat.class, Text.class, Text.class);
-        JavaPairRDD<Text, Text> sort = rdd.sortByKey();
-        sort.saveAsNewAPIHadoopDataset(hadoop_conf);
+        System.out.println("***************DURATION: " + duration + "s");
+
 
     }
 
-    private static void usage() {
-        System.out.println("stera.jar <HDFS-input-dir> <HDFS-output-dir> <HDFS Master URI> <numPartitions>");
-        System.out.println("<HDFS-input-dir>: Example: '/input/file.dat'");
-        System.out.println("<HDFS-output-dir>: Example: '/output'");
-        System.out.println("<HDFS Master URI>: Example 'localhost:9000'");
-        System.out.println("<numPartitions>: Level of Spark RDD parallelism");
-    }
 }

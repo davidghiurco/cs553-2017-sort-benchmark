@@ -30,14 +30,14 @@ generates the data to be sorted.
 # Tasks
 
 The task list for the homework assignment:
-- [ ] Implement the shared memory solution;
-- [ ] Evaluate the shared memory solution;
-- [ ] Set up the Hadoop environment (HDFS + framework) (write scripts);
-- [ ] Implement the Hadoop solution;
-- [ ] Evaluate the Hadoop solution;
-- [ ] Set up the Spark environment (HDFS + framework) (write scripts);
-- [ ] Implement the Spark solution;
-- [ ] Evaluate the Spark solution;
+- [x] Implement the shared memory solution;
+- [x] Evaluate the shared memory solution;
+- [x] Set up the Hadoop environment (HDFS + framework) (write scripts);
+- [x] Implement the Hadoop solution;
+- [x] Evaluate the Hadoop solution;
+- [x] Set up the Spark environment (HDFS + framework) (write scripts);
+- [x] Implement the Spark solution;
+- [x] Evaluate the Spark solution;
 
 # Setting up Filesystem storage
 
