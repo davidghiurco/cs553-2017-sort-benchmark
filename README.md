@@ -62,7 +62,7 @@ sudo mkfs.ext4 /dev/nvme0n1p1
 3. Create a mountpoint for the partition and set permissions
 ```bash
 sudo mkdir -p /mnt/storage
-sudo chmod -R 7777 /mnt/storage
+sudo chmod -R 777 /mnt/storage
 ```
 
 4. Mount the filesystem onto the mountpoint
@@ -102,7 +102,7 @@ sudo mount /dev/md0 /mnt/md0
 4. Setup permissions for the mountpoint
 
 ```bash
-sudo chmod -R 7777 /mnt/md0
+sudo chmod -R 777 /mnt/md0
 ```
 
 5. Check whether the new space is available
