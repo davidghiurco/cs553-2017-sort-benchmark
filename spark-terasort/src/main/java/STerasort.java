@@ -1,5 +1,7 @@
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.spark.SparkConf;
+import org.apache.spark.SparkContext;
+import org.apache.spark.api.java.JavaNewHadoopRDD;
 import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.Function;
@@ -13,12 +15,16 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 
+import scala.reflect.ClassTag;
+
 public class STerasort {
 
     public static void main(String[] args) throws Exception {
 
         SparkConf spark_conf = new SparkConf().setAppName("Spark TeraSort");
         JavaSparkContext sparkContext = new JavaSparkContext(spark_conf);
+
+        SparkContext sparkContext1 = new SparkContext(spark_conf);
 
         // Hadoop setup
         Configuration hadoop_conf = sparkContext.hadoopConfiguration();
@@ -36,11 +42,30 @@ public class STerasort {
 //        JavaRDD<String> sorted = textFile
 //                .sortBy((Function<String, String>) value -> value, true, numPartitions);
 //        sorted.saveAsTextFile("hdfs://" + hdfs_URI + outputDir);
-        rdd = NewHadoopRDD()
+//        NewHadoopRDD<Text, Text> srdd = new NewHadoopRDD<>(
+//                sparkContext1,
+//                TeraInputFormat.class,
+//                Text.class,
+//                Text.class,
+//                hadoop_conf
+//        );
 
-        JavaPairRDD<Text, Text> rdd = NewHadoopRDD(
-                sparkContext, TeraInputFormat.class, Text.class, Text.class, job.getConfiguration())
-        // JavaPairRDD<Text, Text> rdd = sparkContext.newAPIHadoopRDD(spark_conf, TeraInputFormat.class, Text.class, Text.class);
+//        JavaNewHadoopRDD<Text, Text> rdd = new JavaNewHadoopRDD<Text, Text>(
+//                srdd,
+//                new ClassTag<Text>(),
+//                new ClassTag<Text>()
+//        );
+
+//        JavaPairRDD<Text, Text> rdd = NewHadoopRDD(
+//                sparkContext, TeraInputFormat.class, Text.class, Text.class, job.getConfiguration())
+
+        JavaPairRDD<Text, Text> rdd = sparkContext.newAPIHadoopRDD(
+                hadoop_conf,
+                TeraInputFormat.class,
+                Text.class,
+                Text.class
+        );
+
         JavaPairRDD<Text, Text> sort = rdd.sortByKey();
         sort.saveAsNewAPIHadoopDataset(hadoop_conf);
 

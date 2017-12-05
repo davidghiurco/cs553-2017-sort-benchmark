@@ -60,6 +60,13 @@ then
     echo "export PATH=${HADOOP_HOME}/bin:${HADOOP_HOME}/sbin:$PATH" >> ~/.bashrc
 fi
 
+exists=$(cat ~/.bashrc | grep "HADOOP_CONF_DIR" | wc -l)
+if [ ${exists} -eq 0 ]
+then
+    echo "export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop" >> ~/.bashrc
+    echo "export YARN_CONF_DIR=$HADOOP_HOME/etc/hadoop" >> ~/.bashrc
+fi
+
 head -n 24 ${HADOOP_HOME}/etc/hadoop/hadoop-env.sh > temp.txt
 echo "export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64" >> temp.txt
 echo "export HADOOP_HOME=$(pwd)/download/hadoop-2.7.4" >> temp.txt
