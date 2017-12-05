@@ -2,8 +2,11 @@ BASH=bash
 
 all: hadoop-setup
 
-single-hadoop-setup:
-	$(BASH) single-hadoop-setup.sh
+single-hadoop-setup-large:
+	$(BASH) single-hadoop-setup-large.sh
+
+single-hadoop-setup-xlarge:
+	$(BASH) single-hadoop-setup-xlarge.sh
 
 single-hadoop-deploy:
 	$(BASH) single-hadoop-deploy.sh

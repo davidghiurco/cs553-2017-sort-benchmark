@@ -13,6 +13,15 @@ spark-terasort/scripts/temp.txt
 scripts/data
 scripts/download
 
+hadoop-terasort/build/
+hadoop-terasort/scripts/download
+hadoop-terasort/scripts/HDFS
+hadoop-terasort/scripts/hadoop-prefix.sh
+
+spark-terasort/build/
+spark-terasort/scripts/download
+spark-terasort/scripts/spark-prefix.sh
+
 temp.txt
 
 .gradle/

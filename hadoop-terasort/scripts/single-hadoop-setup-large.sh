@@ -1,13 +1,29 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+##############Setup for AWS i3.3xlarge
 
 master="flamedragon"
 
-if [ ! $(dpkg -s openjdk-8-jdk >> /dev/null) ]; then
+dpkg -s openjdk-8-jdk >> /dev/null
+EXIT_STATUS=$?
+if [ ! "$EXIT_STATUS" -eq 0 ]; then
 sudo apt update
 sudo apt install -y openjdk-8-jdk
 fi
 export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64
 export HADOOP_HOME=$(pwd)/download/hadoop-2.7.4
+
+# Setup localhost for passwordless SSH
+if [ ! -f ~/.ssh/id_rsa ]; then
+    ssh-keygen -b 2048 -t rsa -f ~/.ssh/id_rsa -q -N ""
+fi
+
+PUBLIC_KEY=$(cat ~/.ssh/id_rsa.pub)
+cat ~/.ssh/authorized_keys | grep "${PUBLIC_KEY}" >> /dev/null
+
+if [ $? -ne 0 ]; then
+    echo ${PUBLIC_KEY} >> ~/.ssh/authorized_keys
+fi
 
 if [ ! -d "download" ]
 then
@@ -39,6 +55,8 @@ if [ ${exists} -eq 0 ]
 then
     echo "export HADOOP_HOME=$(pwd)/download/hadoop-2.7.4" >> ~/.bashrc
     echo "export LD_LIBRARY_PATH=$HADOOP_HOME/lib/native:$LD_LIBRARY_PATH" >> ~/.bashrc
+    echo "export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop" >> ~/.bashrc
+    echo "export YARN_CONF_DIR=$HADOOP_HOME/etc/hadoop" >> ~/.bashrc
     echo "export PATH=${HADOOP_HOME}/bin:${HADOOP_HOME}/sbin:$PATH" >> ~/.bashrc
 fi
 
@@ -68,6 +86,10 @@ echo "    <property>" >> ${HADOOP_HOME}/etc/hadoop/core-site.xml
 echo "        <name>fs.defaultFS</name>" >> ${HADOOP_HOME}/etc/hadoop/core-site.xml
 echo "        <value>hdfs://$master:9000</value>" >> ${HADOOP_HOME}/etc/hadoop/core-site.xml
 echo "    </property>" >> ${HADOOP_HOME}/etc/hadoop/core-site.xml
+echo "    <property>" >> ${HADOOP_HOME}/etc/hadoop/core-site.xml
+echo "        <name>hadoop.tmp.dir</name>" >> ${HADOOP_HOME}/etc/hadoop/core-site.xml
+echo "        <value>$(pwd)/HDFS/tmp</value>" >> ${HADOOP_HOME}/etc/hadoop/core-site.xml
+echo "    </property>" >> ${HADOOP_HOME}/etc/hadoop/core-site.xml
 echo "</configuration>" >> ${HADOOP_HOME}/etc/hadoop/core-site.xml
 
 num=$(cat ${HADOOP_HOME}/etc/hadoop/hdfs-site.xml | grep -n "<configuration>" | cut -d ':' -f1)
@@ -93,8 +115,24 @@ head -n $(($num - 1)) ${HADOOP_HOME}/etc/hadoop/yarn-site.xml > temp.txt
 cat temp.txt > ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
 echo "<configuration>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
 echo "    <property>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+echo "        <name>yarn.resourcemanager.hostname</name>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+echo "        <value>$master</value>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+echo "    </property>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+echo "    <property>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+echo "        <name>yarn.resourcemanager.address</name>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+echo '        <value>${yarn.resourcemanager.hostname}:8032</value>' >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+echo "    </property>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+echo "    <property>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
 echo "        <name>yarn.nodemanager.aux-services</name>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
 echo "        <value>mapreduce_shuffle</value>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+echo "    </property>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+echo "    <property>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+echo "        <name>yarn.nodemanager.resource.memory-mb</name>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+echo "        <value>12000</value>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+echo "    </property>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+echo "    <property>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+echo "        <name>yarn.nodemanager.resource.cpu-vcores</name>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+echo "        <value>2</value>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
 echo "    </property>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
 echo "</configuration>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
 
