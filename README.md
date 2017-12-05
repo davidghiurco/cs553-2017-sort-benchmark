@@ -43,10 +43,10 @@ The task list for the homework assignment:
 
 ```bash
 sudo apt-get update
-sudo apt-get install make
+sudo apt-get install -y make openjdk-8-jdk
 ./gradlew build
 ```
-This will compile the hadoop-terasort & spark-terasort modules, as well as install Make for the Shared Memory implementation compilation
+This will install Java and Make, then compile the hadoop-terasort & spark-terasort modules
 
 The Hadoop application JAR will be installed in:
 ```bash
