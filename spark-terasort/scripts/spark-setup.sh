@@ -1,9 +1,15 @@
 #!/usr/bin/env bash
 
+dpkg -s openjdk-8-jdk >> /dev/null
+EXIT_STATUS=$?
+if [ ! "$EXIT_STATUS" -eq 0 ]; then
+sudo apt update
+sudo apt install -y openjdk-8-jdk
+sudo apt install -y scala
+fi
 export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64
-# export HADOOP_PREFIX=$(pwd)/download/hadoop-2.7.4
 
-master="null"
+master="flamedragon"
 
 if [ ! -d "download" ]
 then
@@ -24,17 +30,9 @@ then
     cd ..
 fi
 
-sudo apt update
-sudo apt install -y openjdk-8-jdk openjdk-8-jre
-sudo apt install -y scala
-
-# wget http://www.scala-lang.org/files/archive/scala-2.10.6.tgz
-# sudo mkdir /usr/local/src/scala
-# sudo tar xvf scala-2.10.6.tgz -C /usr/local/src/scala/
-
 
 export SPARK_HOME=$(pwd)/download/spark-2.2.0-bin-hadoop2.7
 export PATH=${SPARK_HOME}/bin:$PATH
 
-echo "export SPARK_HOME=$SPARK_HOME" > spark_prefix.sh
-echo "export PATH=${SPARK_HOME}/bin:$PATH" >> spark_prefix.sh
+echo "export SPARK_HOME=$SPARK_HOME" > spark-prefix.sh
+echo "export PATH=${SPARK_HOME}/bin:$PATH" >> spark-prefix.sh
