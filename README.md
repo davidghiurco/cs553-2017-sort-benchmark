@@ -42,9 +42,11 @@ The task list for the homework assignment:
 # Building Project
 
 ```bash
+sudo apt-get update
+sudo apt-get install make
 ./gradlew build
 ```
-This will compile the hadoop-terasort & spark-terasort modules.
+This will compile the hadoop-terasort & spark-terasort modules, as well as install Make for the Shared Memory implementation compilation
 
 The Hadoop application JAR will be installed in:
 ```bash
