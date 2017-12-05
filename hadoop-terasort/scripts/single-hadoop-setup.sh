@@ -12,8 +12,8 @@ export JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-amd64
 export HADOOP_HOME=$(pwd)/download/hadoop-2.7.4
 
 # Setup localhost for passwordless SSH
-if [ ! ~/.ssh/id_rsa ]; then
-ssh-keygen -b 2048 -t rsa -f ~/.ssh/id_rsa -q -N ""
+if [ ! -f ~/.ssh/id_rsa ]; then
+    ssh-keygen -b 2048 -t rsa -f ~/.ssh/id_rsa -q -N ""
 fi
 
 PUBLIC_KEY=$(cat ~/.ssh/id_rsa.pub)
