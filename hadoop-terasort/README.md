@@ -33,14 +33,21 @@ and subsequent entries should be the hostnames of slave nodes. In the case of si
     ```
 5. Depending on which cluster you are configuring, run the following commands
 
-    Single-node cluster:
+    Single-node cluster (1x i3.large):
     ```bash
     cd hadoop-terasort/scripts
-    make single-hadoop-setup
+    make single-hadoop-setup-large
+    make single-hadoop-deploy
+    ```
+    
+    Single-node cluster (1x i3.4xlarge):
+    ```bash
+    cd hadoop-terasort/scripts
+    make single-hadoop-setup-xlarge
     make single-hadoop-deploy
     ```
 
-    Multi-node cluster:
+    Multi-node cluster (8x i3.large):
     ```bash
     cd hadoop-terasort/scripts
     make multi-hadoop-setup
@@ -79,11 +86,33 @@ and subsequent entries should be the hostnames of slave nodes. In the case of si
 
 NOTE: We used Hadoop TeraGen and TeraValidate instead of gensort and valsort. The distribution for the programs is broken
 
-### Virtual Cluster (1-node i3.large)
+### Virtual Cluster (1-node i3.large) (128 GB)
 
 1. Create the dataset
 
-### Virtual Cluster (1-node i3.4xlarge)
+    From the project root:
+    ```bash
+    hadoop jar hadoop-mapreduce-examples.jar teragen 1280000000 /input
+    ```
+2. Run HTerasort with 2 reduce tasks (for 2 VCPUs):
+
+    ```bash
+    hadoop jar hadoop-terasort/build/libs/htera.jar -Dmapred.reduce.tasks=2 /input /output
+    ```
+3. Run the TeraValidator to check the output is sorted:
+
+    ```bash
+    hadoop jar hadoop-mapreduce-examples.jar teravalidate /output /report
+    ```
+4. Verify the report. If the output is sorted correctly, the only output in the file found in
+the /report directory will be the checksum
+
+    ```bash
+    hadoop fs -ls /report
+    hadoop fs -cat /report/file_name
+    ```
+
+### Virtual Cluster (1-node i3.4xlarge) (1 TB)
 
 
 

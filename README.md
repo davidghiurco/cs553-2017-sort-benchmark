@@ -69,6 +69,21 @@ under the hadoop-terasort module directory.
 
 ## Setting up 8x i3.large
 
+1. Setup RAID 0
+
+```bash
+sudo apt-get install -y mdadm
+lsblk
+sudo mdadm --create --verbose /dev/md0 --level=0 --raid-devices=2 /dev/nvme0n1 /dev/nvme1n1
+```
+
+2. Format the disk
+Note: This will take a VERY long time. Close to 45 minutes. 3.5 TB has to be formatted
+```bash
+lsblk
+sudo mkfs.ext4 /dev/mdo
+```
+
 
 
 # Building Project
@@ -79,6 +94,11 @@ sudo apt-get install -y make openjdk-8-jdk
 ./gradlew build
 ```
 This will install Java and Make, then compile the hadoop-terasort & spark-terasort modules
+
+To stop the gradle daemon after compilation (so it doesn't waste memory):
+```bash
+./gradlew --stop
+```
 
 The Hadoop application JAR will be installed in:
 ```bash
