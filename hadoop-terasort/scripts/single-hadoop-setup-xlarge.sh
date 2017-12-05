@@ -2,7 +2,7 @@
 
 ##############Setup for AWS i3.4xlarge
 
-master="flamedragon"
+master="ip-172-31-44-240"
 
 dpkg -s openjdk-8-jdk >> /dev/null
 EXIT_STATUS=$?

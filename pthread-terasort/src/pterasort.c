@@ -27,6 +27,7 @@ typedef struct split_t {
     unsigned int num_files;
     FILE **files;
     node_t *root;
+    unsigned long *sum;
 } split_t;
 
 typedef struct sort_t {
@@ -104,9 +105,11 @@ int main(int argc, char **argv)
 
     // split the input into smaller buckets
     split(root);
+    printf("Splitting finished!\n");
 
     // parallel sort the buckets
     sort(root);
+    printf("Sorting finished!\n");
     gettimeofday(&end, NULL);
     exectime = (((long) end.tv_sec - (long) start.tv_sec) 
             * 1000000 + (end.tv_usec - start.tv_usec)) / 1000000;
@@ -199,11 +202,12 @@ void *parallel_sort(void *args)
 {
     sort_t *arg;
     FILE *fil;
-    char buffer[RAM_THREADS];
+    char *buffer;
     unsigned int pos, n;
 
     arg = (sort_t *) args;
 
+    buffer = (char *) malloc(RAM_THREADS * sizeof(char));
     while ((pos = __sync_fetch_and_add(arg->pos, 1)) < arg->num_files) {
         fil = fopen(arg->files[pos], "rb");
         n = fread(buffer, sizeof(char), RAM_THREADS, fil);
@@ -219,8 +223,10 @@ void *parallel_sort(void *args)
 
         fil = fopen(arg->files[pos], "wb");
         n = fwrite(buffer, sizeof(char), n, fil);
+        printf("Processed file %s\n", arg->files[pos]);
         fclose(fil);
     }
+    free(buffer);
 
     pthread_exit(0);
 }
@@ -311,6 +317,7 @@ void *parallel_split(void *args)
     char buffer[BUFFER_SIZE];
     long pos;
     unsigned int i, step, j, n;
+    unsigned long sum = 0;
 
     arg = (split_t *) args;
     step = (arg->root->max - arg->root->min) / arg->root->num_bkts;
@@ -326,8 +333,16 @@ void *parallel_split(void *args)
             arg->root->bkts[i]->num_elems = __sync_add_and_fetch(
                     &arg->root->bkts[i]->num_elems, 1);
             fwrite(&buffer[j], sizeof(char), 100, arg->files[i]);
+            *arg->sum = __sync_add_and_fetch(arg->sum, 100);
+            if (arg->tid == 0 && (*arg->sum - sum > 100000000)) {
+                printf("Processed: %lu Bytes\n", *arg->sum);
+                sum = *arg->sum;
+            }
         }
         pos += BUFFER_SIZE * NUM_THREADS;
+        if (pos > arg->root->num_elems * 100) {
+            break;
+        }
         fseek(fil, pos, 0);
     }
     fclose(fil);
@@ -341,7 +356,10 @@ void split(node_t *root)
     FILE **files;
     split_t args[NUM_THREADS];
     pthread_t threads[NUM_THREADS];
+    unsigned long *sum;
     
+    sum = (unsigned long *) malloc(sizeof(unsigned long));
+    *sum = 0;
     files = (FILE **) malloc(root->num_bkts * sizeof(FILE *));
     for (i = 0; i < root->num_bkts; i++) {
         files[i] = fopen(root->bkts[i]->filename, "wb");
@@ -351,6 +369,7 @@ void split(node_t *root)
         args[i].tid = i;
         args[i].num_files = root->num_bkts;
         args[i].files = files;
+        args[i].sum = sum;
         args[i].root = root;
     }
 
@@ -366,6 +385,7 @@ void split(node_t *root)
         fclose(files[i]);
     }
     free(files);
+    free(sum);
 
     for (i = 0; i < root->num_bkts; i++) {
         if ((root->bkts[i]->num_elems * 100) > RAM_THREADS) {
