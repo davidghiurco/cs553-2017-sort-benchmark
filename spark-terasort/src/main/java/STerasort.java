@@ -1,7 +1,6 @@
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
-import org.apache.spark.api.java.function.Function;
 
 import java.io.PrintWriter;
 
@@ -17,9 +16,9 @@ public class STerasort {
 
 
         long startTime = System.nanoTime();
-        JavaRDD<String> textFile = sparkContext.textFile("/input");
+        JavaRDD<String> textFile = sparkContext.textFile("/input", Integer.parseInt(args[0]));
         JavaRDD<String> sorted = textFile
-                .sortBy((Function<String, String>) value -> value, true, Integer.parseInt(args[0]));
+                .sortBy(value -> value, true, Integer.parseInt(args[0]));
         sorted.saveAsTextFile("/output");
         long endTime = System.nanoTime();
 
