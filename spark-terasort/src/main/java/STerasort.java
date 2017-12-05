@@ -20,7 +20,7 @@ public class STerasort {
         JavaSparkContext sparkContext = new JavaSparkContext(spark_conf);
 
         // Hadoop setup
-        Configuration hadoop_conf = new Configuration(sparkContext.hadoopConfiguration());
+        Configuration hadoop_conf = sparkContext.hadoopConfiguration();
         Job job = Job.getInstance(hadoop_conf, "STerasort");
 
         // Input
