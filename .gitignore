@@ -13,6 +13,9 @@ spark-terasort/scripts/temp.txt
 scripts/data
 scripts/download
 
+hadoop-terasort/build/
+spark-terasort/build/
+
 temp.txt
 
 .gradle/

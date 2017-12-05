@@ -2,7 +2,9 @@
 
 master="flamedragon"
 
-if [ ! $(dpkg -s openjdk-8-jdk >> /dev/null) ]; then
+dpkg -s openjdk-8-jdk >> /dev/null
+EXIT_STATUS=$?
+if [ ! "$EXIT_STATUS" -eq 0 ]; then
 sudo apt update
 sudo apt install -y openjdk-8-jdk
 fi
@@ -39,6 +41,8 @@ if [ ${exists} -eq 0 ]
 then
     echo "export HADOOP_HOME=$(pwd)/download/hadoop-2.7.4" >> ~/.bashrc
     echo "export LD_LIBRARY_PATH=$HADOOP_HOME/lib/native:$LD_LIBRARY_PATH" >> ~/.bashrc
+    echo "export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop"
+    echo "export YARN_CONF_DIR=$HADOOP_HOME/etc/hadoop"
     echo "export PATH=${HADOOP_HOME}/bin:${HADOOP_HOME}/sbin:$PATH" >> ~/.bashrc
 fi
 
