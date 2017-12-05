@@ -62,12 +62,12 @@ sudo mkfs.ext4 /dev/nvme0n1p1
 3. Create a mountpoint for the partition and set permissions
 ```bash
 sudo mkdir -p /mnt/storage
-sudo chmod -R 07777 /mnt/md0
+sudo chmod -R 7777 /mnt/storage
 ```
 
 4. Mount the filesystem onto the mountpoint
 ```bash
-sudo mount /dev/nvm10n1p1 /mnt/storage
+sudo mount /dev/nvme0n1p1 /mnt/storage
 ```
 
 Now, clone this repository into /mnt/storage, and use the deployment scripts. They will assume that the mountpoint the 
@@ -102,7 +102,7 @@ sudo mount /dev/md0 /mnt/md0
 4. Setup permissions for the mountpoint
 
 ```bash
-sudo chmod -R 07777 /mnt/md0
+sudo chmod -R 7777 /mnt/md0
 ```
 
 5. Check whether the new space is available
