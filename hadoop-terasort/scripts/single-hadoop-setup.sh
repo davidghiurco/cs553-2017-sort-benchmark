@@ -17,7 +17,7 @@ if [ ! -f ~/.ssh/id_rsa ]; then
 fi
 
 PUBLIC_KEY=$(cat ~/.ssh/id_rsa.pub)
-AUTHORIZED=$(cat ~/.ssh/authorized_keys) | grep ${PUBLIC_KEY}
+AUTHORIZED=$(cat ~/.ssh/authorized_keys) | grep "${PUBLIC_KEY}"
 
 if [ ! "$AUTHORIZED" -eq 0 ]; then
     echo ${PUBLIC_KEY} >> ~/.ssh/authorized_keys
