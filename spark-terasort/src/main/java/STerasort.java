@@ -3,6 +3,7 @@ import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.input.PortableDataStream;
+import org.codehaus.janino.Java;
 
 import java.io.*;
 
@@ -23,10 +24,15 @@ public class STerasort {
 //                .sortBy(value -> value, true, Integer.parseInt(args[0]));
 //        sorted.saveAsTextFile("/output");
 
+        JavaRDD<byte[]> rdd = sparkContext.binaryRecords("/input", 100);
+        JavaRDD<byte[]> sorted = rdd
+                .sortBy(value -> value, true, Integer.parseInt(args[0]));
+        sorted.saveAsTextFile("/output");
 
-        JavaPairRDD<String, PortableDataStream> binaryFile = sparkContext.binaryFiles("/input");
-        JavaPairRDD<String, PortableDataStream> sorted = binaryFile.sortByKey();
-        sorted.saveAsObjectFile("/output");
+
+//        JavaPairRDD<String, PortableDataStream> binaryFile = sparkContext.binaryFiles("/input");
+//        JavaPairRDD<String, PortableDataStream> sorted = binaryFile.sortByKey();
+//        sorted.saveAsObjectFile("/output");
 
 
         long endTime = System.nanoTime();
