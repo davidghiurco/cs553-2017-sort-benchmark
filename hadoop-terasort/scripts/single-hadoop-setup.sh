@@ -109,12 +109,16 @@ head -n $(($num - 1)) ${HADOOP_HOME}/etc/hadoop/yarn-site.xml > temp.txt
 cat temp.txt > ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
 echo "<configuration>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
 echo "    <property>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
-echo "        <name>yarn.nodemanager.aux-services</name>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
-echo "        <value>mapreduce_shuffle</value>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
-echo "    </property>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
-echo "    <property>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
 echo "        <name>yarn.resourcemanager.hostname</name>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
 echo "        <value>$master</value>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+echo "    </property>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+echo "    <property>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+echo "        <name>yarn.resourcemanager.address</name>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+echo '        <value>${yarn.resourcemanager.hostname}:8032</value>' >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+echo "    </property>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+echo "    <property>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+echo "        <name>yarn.nodemanager.aux-services</name>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+echo "        <value>mapreduce_shuffle</value>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
 echo "    </property>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
 echo "</configuration>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
 
