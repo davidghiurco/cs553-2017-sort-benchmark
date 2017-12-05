@@ -39,6 +39,38 @@ The task list for the homework assignment:
 - [ ] Implement the Spark solution;
 - [ ] Evaluate the Spark solution;
 
+# Setting up Filesystem storage
+
+Before running any deployment, we need to create a mountpoint for the SSD of the AWS instance.
+i3.large nodes have an 8 GB partition allocated to the OS, and 442.4 G unallocated.
+i3.4x large nodes need a mountpoint setup with RAID 0 in order to be able to store 1 TB in HDFS
+
+## Setting up 1x i3.large
+
+```bash
+lsblk
+sudo fdisk /dev/nvme0n1
+```
+Create a new partition on the disk (n), select primary type (p), accept defaults, and write the partition to disk (w)
+
+Create a mountpoint for the partition
+```bash
+sudo mkfs.ext4 /dev/nvme0n1p1
+sudo mkdir /mnt/storage
+sudo mount /dev/nvm10n1p1 /mnt/storage
+```
+
+Now, clone this repository into /mnt/storage, and use the deployment scripts. They will assume that the mountpoint the 
+repository is cloned to is the disk where the HDFS filesystem will reside. HDFS files will be stored
+under the hadoop-terasort module directory.
+
+## Setting up 1x i3.4xlarge
+
+
+## Setting up 8x i3.large
+
+
+
 # Building Project
 
 ```bash

@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+##############Setup for AWS i3.3xlarge
+
 master="flamedragon"
 
 dpkg -s openjdk-8-jdk >> /dev/null
@@ -119,6 +121,14 @@ echo "    </property>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
 echo "    <property>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
 echo "        <name>yarn.nodemanager.aux-services</name>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
 echo "        <value>mapreduce_shuffle</value>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+echo "    </property>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+echo "    <property>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+echo "        <name>yarn.nodemanager.resource.memory-mb</name>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+echo "        <value>12000</value>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+echo "    </property>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+echo "    <property>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+echo "        <name>yarn.nodemanager.resource.cpu-vcores</name>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
+echo "        <value>2</value>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
 echo "    </property>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
 echo "</configuration>" >> ${HADOOP_HOME}/etc/hadoop/yarn-site.xml
 
