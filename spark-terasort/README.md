@@ -34,8 +34,8 @@ For 8x i3.large: num_partitions = 16
 6. Delete the input directory in HDFS, and copy the output directory to the local filesystem
 
 ```bash
-hadoop fs -rm -r -f /input
-hadoop fs -copyToLocal /output .
+hadoop fs -rm -r -f /input2
+hadoop fs -copyToLocal /output2 .
 ```
 
 7. Run the valsort validator on the files found in ./output to verify sort completed successfully
